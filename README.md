@@ -104,7 +104,66 @@ import graphql.schema.idl.RuntimeWiring.Builder;
         GqlScalars.transformFormatTypeResolvers().forEach(runtimeWiringBuilder::scalar);
 ```
 
-See the [GraphQL Sample Application](https://github.com/manifold-systems/manifold-sample-graphql-app) to see how this
+For example, you can apply the following patch to the [GraphQL Sample Application](https://github.com/manifold-systems/manifold-sample-graphql-app) to use this project's scalars locally:
+```aidl
+Index: src/main/resources/manifold/graphql/sample/schema/movies.graphql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/manifold/graphql/sample/schema/movies.graphql b/src/main/resources/manifold/graphql/sample/schema/movies.graphql
+--- a/src/main/resources/manifold/graphql/sample/schema/movies.graphql	(revision 1501b6f0e82eb6254265bcf18892589056bca542)
++++ b/src/main/resources/manifold/graphql/sample/schema/movies.graphql	(date 1613595102748)
+@@ -44,6 +44,7 @@
+   dateOfBirth: Date!
+   nationality: String
+   height: Float # meters
++  url: URL
+ }
+ 
+ type Animal implements Actor {
+@@ -86,6 +87,7 @@
+ union CastMember = Person | Animal
+ 
+ scalar Date # Java LocalDate
++scalar URL
+ 
+ enum Type {
+   Main, Supporting, Antagonist, Tertiary, Flat
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 1501b6f0e82eb6254265bcf18892589056bca542)
++++ b/pom.xml	(date 1613594812049)
+@@ -20,6 +20,11 @@
+             <artifactId>manifold-graphql-rt</artifactId>
+             <version>${manifold.version}</version>
+         </dependency>
++        <dependency>
++            <groupId>systems.manifold</groupId>
++            <artifactId>manifold-sample-graphql-scalars</artifactId>
++            <version>0.1-SNAPSHOT</version>
++        </dependency>
+ 
+         <!-- Manifold : Collections (extension library for collections) -->
+         <dependency>
+@@ -77,6 +82,11 @@
+                             <groupId>systems.manifold</groupId>
+                             <artifactId>manifold-graphql</artifactId>
+                             <version>${manifold.version}</version>
++                        </path>
++                        <path>
++                            <groupId>systems.manifold</groupId>
++                            <artifactId>manifold-sample-graphql-scalars</artifactId>
++                            <version>0.1-SNAPSHOT</version>
+                         </path>
+                         <path>
+                             <groupId>systems.manifold</groupId>
+```
+Clone the [GraphQL Sample Application](https://github.com/manifold-systems/manifold-sample-graphql-app) to see how this
 works.
 
 ### IntelliJ IDEA
